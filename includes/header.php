@@ -19,18 +19,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="dropdown px-1">
-        <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        KATEGORI
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <?php $query=mysqli_query($con,"select id,CategoryName from tblcategory");
-          while($row=mysqli_fetch_array($query))
-          {
-          ?>
-        <a class="dropdown-item" href="category.php?catid=<?php echo htmlentities($row['id'])?>"><?php echo htmlentities($row['CategoryName']);?></a>
-          <?php } ?>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <?php $query=mysqli_query($con,"select id,CategoryName from tblcategory");
+            while($row=mysqli_fetch_array($query)){;?>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="category.php?catid=<?php echo htmlentities($row['id'])?>"><?php echo htmlentities($row['CategoryName']);?></a>
+              </li>
+          <?php } ;?>
+          </li> 
+        </ul>
       </div>
       </div>
     </div>
