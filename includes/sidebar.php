@@ -17,45 +17,52 @@
           </div> -->
 
           <!-- Categories Widget -->
-          <div class="card my-4">
+          <!-- Side Widget -->
+          <h5>Recent News</h5>
+          <?php if(isset($_GET['catid'])) :?>
+            <div class="card mb-3" style="max-width: 540px;">
+              <?php 
+                $id = htmlspecialchars($_GET['catid']);
+                include('includes/config.php');
+                $sql = "SELECT * FROM tblposts WHERE CategoryId = '$id'";
+                $result = mysqli_query($con, $sql);
+                while($row = mysqli_fetch_assoc($result)) {
+                  $date = $row["PostingDate"];
+              ;?>
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="admin/postimages/<?= $row["PostImage"];?>" class="" style="width: 100px;margin-top:20%;" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title"><?php echo $row["PostTitle"] ;?></h5>
+                    <p class="card-text"><small class="text-muted">Last updated <?= date("d F Y", strtotime($date));?></small></p>
+                  </div>
+                </div>
+              </div>
+              <?php } ;?>
+            </div>
+          <?php else :?>
+             <!-- Categories Widget -->
+             <div class="card my-4">
             <h5 class="card-header">Categories</h5>
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-6">
                   <ul class="list-unstyled mb-0">
-<?php $query=mysqli_query($con,"select id,CategoryName from tblcategory");
-while($row=mysqli_fetch_array($query))
-{
-?>
-
+                    <?php $query=mysqli_query($con,"select id,CategoryName from tblcategory");
+                    while($row=mysqli_fetch_array($query))
+                    {
+                    ?>
                     <li>
                       <a href="category.php?catid=<?php echo htmlentities($row['id'])?>"><?php echo htmlentities($row['CategoryName']);?></a>
                     </li>
-<?php } ?>
+                    <?php } ?>
                   </ul>
                 </div>
-       
               </div>
             </div>
           </div>
 
-          <!-- Side Widget -->
-          <div class="card my-4">
-            <h5 class="card-header">Recent News</h5>
-            <div class="card-body">
-                      <ul class="mb-0">
-<?php
-$query=mysqli_query($con,"select tblposts.id as pid,tblposts.PostTitle as posttitle from tblposts left join tblcategory on tblcategory.id=tblposts.CategoryId left join  tblsubcategory on  tblsubcategory.SubCategoryId=tblposts.SubCategoryId limit 8");
-while ($row=mysqli_fetch_array($query)) {
-
-?>
-
-  <li>
-                      <a href="news-details.php?nid=<?php echo htmlentities($row['pid'])?>"><?php echo htmlentities($row['posttitle']);?></a>
-                    </li>
-            <?php } ?>
-          </ul>
-            </div>
-          </div>
-
+          <?php endif ;?>
         </div>
